@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://crystalsaf.googlecode.com/svn/trunk/EclipseUpdate/">
+      The update site for the Crystal Static Analysis Framework.
+   </description>
+   <feature url="features/edu.cmu.cs.crystal.feature_3.5.2.jar" id="edu.cmu.cs.crystal.feature" version="3.5.2"/>
+   <category-def name="Crystal Core" label="Crystal Core">
+      <description>
+         Crystal core component.
+      </description>
+   </category-def>
+</site>
