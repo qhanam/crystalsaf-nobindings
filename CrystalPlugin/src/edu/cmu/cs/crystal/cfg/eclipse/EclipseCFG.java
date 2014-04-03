@@ -1261,16 +1261,23 @@ public class EclipseCFG extends ASTVisitor implements IControlFlowGraph<ASTNode>
 		makeListEdges(null, (List<ASTNode>) node.arguments(), constructor);
 
 		// handle exception edges
-		for (ITypeBinding exception : node.resolveConstructorBinding().getExceptionTypes()) {
-			EclipseCFGNode catchNode = exceptionMap.getCatchNode(exception);
-
-			if (catchNode != null)
-				createEdge(constructor, catchNode.getStart(), exception);
-			// else
-			// createEdge(invocation, normalExit, exception);
+		/* Quinn - Modified to handle missing bindings. */
+		if(node.resolveConstructorBinding() != null){
+			for (ITypeBinding exception : node.resolveConstructorBinding().getExceptionTypes()) {
+				EclipseCFGNode catchNode = exceptionMap.getCatchNode(exception);
+	
+				if (catchNode != null)
+					createEdge(constructor, catchNode.getStart(), exception);
+				// else
+				// createEdge(invocation, normalExit, exception);
+			}
 		}
-
-		constructor.setName("new " + node.getType().resolveBinding().getName());
+		
+		/* Quinn - Modified to handle missing bindings. */
+		if(node.getType().resolveBinding() != null){
+			constructor.setName("new " + node.getType().resolveBinding().getName());
+		}
+		
 	}
 
 	@Override
@@ -1282,13 +1289,16 @@ public class EclipseCFG extends ASTVisitor implements IControlFlowGraph<ASTNode>
 		    nodeMap.get(node.getExpression()), (List<ASTNode>) node.arguments(), invocation);
 
 		// handle exception edges
-		for (ITypeBinding exception : node.resolveMethodBinding().getExceptionTypes()) {
-			EclipseCFGNode catchNode = exceptionMap.getCatchNode(exception);
-
-			if (catchNode != null)
-				createEdge(invocation, catchNode.getStart(), exception);
-			// else
-			// createEdge(invocation, normalExit, exception);
+		/* Quinn - Modified to handle missing bindings. */
+		if(node.resolveMethodBinding() != null){
+			for (ITypeBinding exception : node.resolveMethodBinding().getExceptionTypes()) {
+				EclipseCFGNode catchNode = exceptionMap.getCatchNode(exception);
+	
+				if (catchNode != null)
+					createEdge(invocation, catchNode.getStart(), exception);
+				// else
+				// createEdge(invocation, normalExit, exception);
+			}
 		}
 
 		invocation.setName("Call " + node.getName().getIdentifier());
